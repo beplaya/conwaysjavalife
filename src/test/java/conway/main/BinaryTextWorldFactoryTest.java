@@ -3,6 +3,8 @@ package conway.main;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class BinaryTextWorldFactoryTest {
@@ -60,6 +62,19 @@ public class BinaryTextWorldFactoryTest {
         assertEquals(true, world.getCell(2, 0).isAlive());
         assertEquals(true, world.getCell(2, 1).isAlive());
         assertEquals(false, world.getCell(2, 2).isAlive());
+    }
+
+    @Test
+    public void itConvertsWorldToStrings() {
+        World world = new World(3, 4);
+        world.getCell(0, 1).setAlive(true);
+        world.getCell(1, 3).setAlive(true);
+        world.getCell(2, 2).setAlive(true);
+        List<String> rows = binaryTextWorldFactory.toRows(world);
+        assertEquals(world.height(), rows.size());
+        assertEquals("0100", rows.get(0));
+        assertEquals("0001", rows.get(1));
+        assertEquals("0010", rows.get(2));
     }
 
 }

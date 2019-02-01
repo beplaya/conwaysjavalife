@@ -13,11 +13,11 @@ public class BinaryTextWorldFactory {
     }
 
     public void addRow(String row) {
-        if(row.length() < MIN_COLUMN_COUNT){
+        if (row.length() < MIN_COLUMN_COUNT) {
             throw new IllegalArgumentException(String.format("Cannot add row with column count under %d", MIN_COLUMN_COUNT));
         }
         if (rows.size() > 0) {
-            if (rows.get(0).length() != row.length()){
+            if (rows.get(0).length() != row.length()) {
                 throw new IllegalArgumentException(String.format("Cannot change column count from %d to %d", rows.get(0).length(), row.length()));
             }
         }
@@ -42,5 +42,17 @@ public class BinaryTextWorldFactory {
             return rows.get(0).length();
         }
         return 0;
+    }
+
+    public List<String> toRows(World world) {
+        List<String> rows = new ArrayList<String>();
+        for (int r = 0; r < world.height(); r++) {
+            String rowStr = "";
+            for (int c = 0; c < world.width(); c++) {
+                rowStr += world.getCell(r, c).isAlive() ? "1" : "0";
+            }
+            rows.add(rowStr);
+        }
+        return rows;
     }
 }

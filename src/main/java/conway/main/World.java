@@ -24,16 +24,16 @@ public class World {
     }
 
     public int width() {
-        return grid.length;
-    }
-
-    public int height() {
         return grid[0].length;
     }
 
+    public int height() {
+        return grid.length;
+    }
+
     public void cycle() {
-        for (int r = 0; r < width(); r++) {
-            for (int c = 0; c < height(); c++) {
+        for (int r = 0; r < height(); r++) {
+            for (int c = 0; c < width(); c++) {
                 grid[r][c].cycle(this);
             }
         }
