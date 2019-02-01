@@ -29,7 +29,9 @@ public class BinaryTextWorldFactory {
         for (int rowIndex = 0; rowIndex < rows.size(); rowIndex++) {
             String rowStr = rows.get(rowIndex);
             for (int colIndex = 0; colIndex < rowStr.length(); colIndex++) {
-                world.getCell(rowIndex, colIndex).setAlive(rowStr.charAt(colIndex) == '1');
+                boolean alive = rowStr.charAt(colIndex) == '1';
+                world.getCell(rowIndex, colIndex).setWasAlive(alive);
+                world.getCell(rowIndex, colIndex).setAlive(alive);
             }
         }
         return world;

@@ -8,7 +8,9 @@ public class Cell {
     private static final int MAX_POPULATION = 3;
     private static final int FERTILE_POPULATION = 3;
 
+    private boolean lastCycleWasAlive;
     private boolean alive;
+
     public final int row;
     public final int column;
 
@@ -30,16 +32,18 @@ public class Cell {
         if (isUnderpopulated(world) || isOverpopulated(world)) {
             die();
         }
-        if(isInFertileTerritory(world)){
+        if (isInFertileTerritory(world)) {
             live();
         }
     }
 
     private void live() {
+        lastCycleWasAlive = alive;
         alive = true;
     }
 
     private void die() {
+        lastCycleWasAlive = alive;
         alive = false;
     }
 
@@ -47,7 +51,7 @@ public class Cell {
         List<Cell> neighbors = getNeighbors(world);
         int livingCount = 0;
         for (Cell c : neighbors) {
-            if (c.isAlive()) {
+            if (c.wasAlive()) {
                 livingCount++;
             }
         }
@@ -81,6 +85,14 @@ public class Cell {
 
     boolean isInFertileTerritory(World world) {
         return numberOfLivingNeighbors(world) == FERTILE_POPULATION;
+    }
+
+    public boolean wasAlive() {
+        return lastCycleWasAlive;
+    }
+
+    void setWasAlive(boolean wasAlive) {
+        lastCycleWasAlive = wasAlive;
     }
 }
 

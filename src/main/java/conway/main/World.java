@@ -30,4 +30,12 @@ public class World {
     public int height() {
         return grid[0].length;
     }
+
+    public void cycle() {
+        for (int r = 0; r < width(); r++) {
+            for (int c = 0; c < height(); c++) {
+                grid[r][c].cycle(this);
+            }
+        }
+    }
 }
