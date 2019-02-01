@@ -3,6 +3,9 @@ package conway.main;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class WorldTest {
@@ -10,12 +13,12 @@ public class WorldTest {
     private World world;
 
     @Before
-    public void setup(){
+    public void setup() {
         world = new World(10, 10);
     }
 
     @Test
-    public void itGetsACell(){
+    public void itGetsACell() {
         Cell cell = world.getCell(5, 7);
         assertEquals(5, cell.row);
         assertEquals(7, cell.column);
@@ -49,5 +52,37 @@ public class WorldTest {
         assertEquals(true, world.getCell(2, 0).isAlive());
         assertEquals(false, world.getCell(2, 1).isAlive());
         assertEquals(true, world.getCell(2, 2).isAlive());
+    }
+
+
+    @Test
+    public void itKills() {
+
+        BinaryTextWorldFactory binaryTextWorldFactory = new BinaryTextWorldFactory();
+        binaryTextWorldFactory.addRow("0000000");//0000000
+        binaryTextWorldFactory.addRow("0000000");//0000000
+        binaryTextWorldFactory.addRow("0000100");//0000100
+        binaryTextWorldFactory.addRow("0011100");//0010010
+        binaryTextWorldFactory.addRow("0011100");//0010100
+        binaryTextWorldFactory.addRow("0000000");//0001000
+        World world = binaryTextWorldFactory.build();
+        world.cycle();
+        List<String> actualRows = binaryTextWorldFactory.toRows(world);
+        List<String> expectedRows = new ArrayList<String>() {{
+            add("0000000");
+            add("0000000");
+            add("0000100");
+            add("0010010");
+            add("0010100");
+            add("0001000");
+        }};
+        String actual = "";
+        String expected = "";
+        for (int i = 0; i < actualRows.size(); i++) {
+            actual += actualRows.get(i) + "\n";
+            expected += expectedRows.get(i) + "\n";
+        }
+        assertEquals(expected, actual);
+
     }
 }

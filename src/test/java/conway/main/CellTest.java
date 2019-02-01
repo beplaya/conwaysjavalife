@@ -18,6 +18,11 @@ public class CellTest {
     }
 
     @Test
+    public void itGetsTheRightNeigbors(){
+        
+    }
+
+    @Test
     public void itKnowsHowManyNeighborsAreAlive() {
         Cell cell = world.getCell(1, 1);
         assertEquals(0, cell.numberOfLivingNeighbors(world));
@@ -71,26 +76,6 @@ public class CellTest {
     }
 
 
-
-    @Test
-    public void itKnowsWhenOverPopulated() {
-
-        BinaryTextWorldFactory binaryTextWorldFactory = new BinaryTextWorldFactory();
-        binaryTextWorldFactory.addRow("0000000");
-        binaryTextWorldFactory.addRow("0000000");
-        binaryTextWorldFactory.addRow("0000100");
-        binaryTextWorldFactory.addRow("0011100");
-        binaryTextWorldFactory.addRow("0011100");
-        binaryTextWorldFactory.addRow("0000000");
-        World world = binaryTextWorldFactory.build();
-        world.cycle();
-        List<String> strings = binaryTextWorldFactory.toRows(world);
-        List<String> expectedRows = new ArrayList<String>(){{
-            add("")
-        }}
-
-
-    }
 
 
     @Test
