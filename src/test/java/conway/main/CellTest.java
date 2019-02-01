@@ -3,6 +3,9 @@ package conway.main;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class CellTest {
@@ -65,6 +68,28 @@ public class CellTest {
         world.getCell(2, 2).setWasAlive(true);
         world.getCell(2, 1).setWasAlive(true);
         assertTrue(cell.isOverpopulated(world));
+    }
+
+
+
+    @Test
+    public void itKnowsWhenOverPopulated() {
+
+        BinaryTextWorldFactory binaryTextWorldFactory = new BinaryTextWorldFactory();
+        binaryTextWorldFactory.addRow("0000000");
+        binaryTextWorldFactory.addRow("0000000");
+        binaryTextWorldFactory.addRow("0000100");
+        binaryTextWorldFactory.addRow("0011100");
+        binaryTextWorldFactory.addRow("0011100");
+        binaryTextWorldFactory.addRow("0000000");
+        World world = binaryTextWorldFactory.build();
+        world.cycle();
+        List<String> strings = binaryTextWorldFactory.toRows(world);
+        List<String> expectedRows = new ArrayList<String>(){{
+            add("")
+        }}
+
+
     }
 
 

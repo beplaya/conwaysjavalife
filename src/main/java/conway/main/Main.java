@@ -1,35 +1,51 @@
 package conway.main;
 
-import java.io.IOException;
 import java.util.Random;
 
 public class Main {
 
 
+    public static final int MIN_PERIOD = 10;
+    public static final int PERIOD_STEP = 100;
+    public static final int MAX_PERIOD = 1210;
+    public static int PERIOD = 210;
+    public static boolean run = false;
+    private static World world;
+
     //    Any live cell with fewer than two live neighbors dies, as if by underpopulation.
 //    Any live cell with two or three live neighbors lives on to the next generation.
 //    Any live cell with more than three live neighbors dies, as if by overpopulation.
 //    Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
-    public static void main(String[] args) throws InterruptedException, IOException {
-        PainterGUI painterGUI = new PainterGUI();
+    public static void main(String[] args) {
+        final PainterGUI painterGUI = new PainterGUI();
+        new ControlGUI();
+        resetWorld();
 
-        BinaryTextWorldFactory binaryTextWorldFactory = new BinaryTextWorldFactory();
+        new Thread(new Runnable() {
+            public void run() {
+                painterGUI.update(world);
+                while (true) {
+                    try {
+                        Thread.sleep(PERIOD);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (run) {
+                        painterGUI.update(world);
+                        world.cycle();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public static void resetWorld() {
+        final BinaryTextWorldFactory binaryTextWorldFactory = new BinaryTextWorldFactory();
         int size = 60;
         for (int i = 0; i < size; i++) {
             binaryTextWorldFactory.addRow(randomBinaryString(size));
         }
-        World w = binaryTextWorldFactory.build();
-
-
-        painterGUI.update(w);
-//        WorldPrinter worldPrinter = new WorldPrinter();
-        for (int i = 0; i < 50000; i++) {
-            Thread.sleep(100);
-            painterGUI.update(w);
-//            worldPrinter.print(w);
-            w.cycle();
-//            System.out.println("====================================");
-        }
+        world = binaryTextWorldFactory.build();
     }
 
     private static String randomBinaryString(int length) {
@@ -39,5 +55,16 @@ public class Main {
             rbs += random.nextBoolean() ? "1" : "0";
         }
         return rbs;
+    }
+
+    public static void increaseSpeed() {
+        if (PERIOD > MIN_PERIOD ) {
+            PERIOD -= PERIOD_STEP;
+        }
+    }
+    public static void decreaseSpeed() {
+        if (PERIOD < MAX_PERIOD) {
+            PERIOD += PERIOD_STEP;
+        }
     }
 }

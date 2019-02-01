@@ -5,6 +5,7 @@ import sun.security.krb5.internal.PAData;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class PainterGUI extends JFrame {
 
@@ -31,6 +32,7 @@ public class PainterGUI extends JFrame {
     private class Painting extends JPanel {
 
         private World world;
+        private Random random = new Random();
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -39,8 +41,8 @@ public class PainterGUI extends JFrame {
 
             if (world != null) {
 
-                int cellWidth = (int) ((float) getWidth() / (float) world.width());
-                int cellHeight = (int) ((float) getHeight() / (float) world.height());
+                int cellWidth = Math.round ((float) getWidth() / (float) world.width());
+                int cellHeight = Math.round  ((float) getHeight() / (float) world.height());
 
 
                 for (int r = 0; r < world.height(); r++) {
@@ -53,11 +55,22 @@ public class PainterGUI extends JFrame {
             }
         }
 
+
         private void paintCell(Cell cell, Graphics g, int cellWidth, int cellHeight) {
-            g.setColor(cell.isAlive() ? Color.GREEN : Color.BLACK);
+            g.setColor(cell.isAlive() ? getRandomColor() : Color.BLACK);
             int startX = (int) (cell.column * (float)cellWidth);
             int startY = (int) (cell.row * (float)cellHeight);
             g.fillRect(startX, startY, startX + cellWidth, startY + cellHeight);
+            g.setColor(Color.BLACK);
+            g.drawRect(startX, startY, startX + cellWidth, startY + cellHeight);
+        }
+
+        private Color getRandomColor() {
+            return new Color(255, randomColorComponent(), randomColorComponent());
+        }
+
+        private int randomColorComponent() {
+            return random.nextInt(155);
         }
 
 
