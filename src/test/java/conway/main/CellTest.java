@@ -118,4 +118,14 @@ public class CellTest {
         assertTrue(cell.isAlive());
     }
 
+    @Test
+    public void itStaysDeadOutsideFertileTerritory() {
+        Cell cell = world.getCell(1, 1);
+        cell.setAlive(false);
+        world.getCell(0, 1).setAlive(true);
+        world.getCell(0, 2).setAlive(true);
+        cell.cycle(world);
+        assertFalse(cell.isAlive());
+    }
+
 }
