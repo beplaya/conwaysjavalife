@@ -50,15 +50,44 @@ public class CellTest {
         world.getCell(0, 0).setAlive(true);
         world.getCell(0, 1).setAlive(true);
         assertFalse(cell.isUnderpopulated(world));
+        assertFalse(cell.isOverpopulated(world));
         world.getCell(2, 2).setAlive(true);
         assertFalse(cell.isUnderpopulated(world));
+        assertFalse(cell.isOverpopulated(world));
     }
+
+    @Test
+    public void itKnowsWhenOverPopulated() {
+        Cell cell = world.getCell(1, 1);
+        assertFalse(cell.isOverpopulated(world));
+        world.getCell(0, 0).setAlive(true);
+        world.getCell(0, 1).setAlive(true);
+        world.getCell(2, 2).setAlive(true);
+        world.getCell(2, 1).setAlive(true);
+        assertTrue(cell.isOverpopulated(world));
+    }
+
 
     @Test
     public void itDiesIfUnderPopulated() {
 
         Cell cell = world.getCell(1, 1);
         cell.setAlive(true);
+        cell.cycle(world);
+
+        assertFalse(cell.isAlive());
+    }
+
+
+    @Test
+    public void itDiesIfOverPopulated() {
+
+        Cell cell = world.getCell(1, 1);
+        cell.setAlive(true);
+        world.getCell(0,0).setAlive(true);
+        world.getCell(0,1).setAlive(true);
+        world.getCell(0,2).setAlive(true);
+        world.getCell(1,0).setAlive(true);
         cell.cycle(world);
 
         assertFalse(cell.isAlive());

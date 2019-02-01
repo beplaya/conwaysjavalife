@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Cell {
     public static final int MIN_POPULATION = 2;
+    public static final int MAX_POPULATION = 3;
 
     private boolean alive;
     public final int row;
@@ -25,7 +26,7 @@ public class Cell {
     }
 
     public void cycle(World world) {
-        if (isUnderpopulated(world)) {
+        if (isUnderpopulated(world) || isOverpopulated(world)) {
             die();
         }
     }
@@ -64,6 +65,10 @@ public class Cell {
 
     boolean isUnderpopulated(World world) {
         return numberOfLivingNeighbors(world) < MIN_POPULATION;
+    }
+
+    boolean isOverpopulated(World world) {
+        return numberOfLivingNeighbors(world) > MAX_POPULATION;
     }
 }
 
