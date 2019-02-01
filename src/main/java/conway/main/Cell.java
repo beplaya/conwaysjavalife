@@ -8,14 +8,14 @@ public class Cell {
     private static final int MAX_POPULATION = 3;
     private static final int FERTILE_POPULATION = 3;
 
-    private boolean lastCycleWasAlive;
     private boolean alive;
 
     public final int row;
     public final int column;
+    private boolean tempAlive;
+    private boolean willBeAlive;
 
     public Cell(int row, int column) {
-
         this.row = row;
         this.column = column;
     }
@@ -29,29 +29,30 @@ public class Cell {
     }
 
     public void cycle(World world) {
+        if(isAlive()){
+            markToLive();
+        }
+
         if (isUnderpopulated(world) || isOverpopulated(world)) {
-            die();
+            markToDie();
+        } else if (isInFertileTerritory(world)) {
+            markToLive();
         }
-        if (isInFertileTerritory(world)) {
-            live();
-        }
     }
 
-    private void live() {
-        lastCycleWasAlive = alive;
-        alive = true;
+    private void markToLive() {
+        willBeAlive = true;
     }
 
-    private void die() {
-        lastCycleWasAlive = alive;
-        alive = false;
+    private void markToDie() {
+        willBeAlive = false;
     }
 
-    int numberOfLivingNeighbors(World world) {
+    public int numberOfLivingNeighbors(World world) {
         List<Cell> neighbors = getNeighbors(world);
         int livingCount = 0;
         for (Cell c : neighbors) {
-            if (c.wasAlive()) {
+            if (c.isAlive()) {
                 livingCount++;
             }
         }
@@ -60,19 +61,35 @@ public class Cell {
 
     List<Cell> getNeighbors(World world) {
         List<Cell> neighbors = new ArrayList<Cell>();
-        Cell neighbor;
-        for (int rowOff = -1; rowOff <= 1; rowOff++) {
-            for (int colOff = -1; colOff <= 1; colOff++) {
-                if (rowOff != 0 || colOff != 0) {
-                    neighbor = world.getCell(row + rowOff, column + colOff);
-                    if (neighbor != null) {
-                        neighbors.add(neighbor);
-                    }
+        Delta[] deltas = new Delta[]{
+                new Delta(-1, -1), new Delta(-1, 0), new Delta(-1, 1),
+                new Delta(0, -1), new Delta(0, 1),
+                new Delta(1, -1), new Delta(1, 0), new Delta(1, 1),
+        };
+        for (int rdi = 0; rdi < deltas.length; rdi++) {
+            int R = deltas[rdi].row + row;
+            int C = deltas[rdi].col + column;
+            if (R >= 0 && R < world.numberOfRows()) {
+                if (C >= 0 && C < world.numberOfColumns()) {
+                    Cell neighbor = world.getCell(R, C);
+                    neighbors.add(neighbor);
+
                 }
             }
         }
 
         return neighbors;
+    }
+
+    private class Delta {
+        public final int row;
+        public final int col;
+
+        private Delta(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+
     }
 
     boolean isUnderpopulated(World world) {
@@ -87,12 +104,12 @@ public class Cell {
         return numberOfLivingNeighbors(world) == FERTILE_POPULATION;
     }
 
-    public boolean wasAlive() {
-        return lastCycleWasAlive;
+    public boolean willBeAlive() {
+        return willBeAlive;
     }
 
-    void setWasAlive(boolean wasAlive) {
-        lastCycleWasAlive = wasAlive;
+    public void commit() {
+        alive = willBeAlive;
     }
 }
 

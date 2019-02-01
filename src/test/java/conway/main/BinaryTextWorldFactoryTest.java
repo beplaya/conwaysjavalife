@@ -22,8 +22,8 @@ public class BinaryTextWorldFactoryTest {
         binaryTextWorldFactory.addRow("000");
         binaryTextWorldFactory.addRow("000");
         World world = binaryTextWorldFactory.build();
-        assertEquals(3, world.width());
-        assertEquals(3, world.height());
+        assertEquals(3, world.numberOfColumns());
+        assertEquals(3, world.numberOfRows());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -43,16 +43,6 @@ public class BinaryTextWorldFactoryTest {
         binaryTextWorldFactory.addRow("001");
         binaryTextWorldFactory.addRow("110");
         World world = binaryTextWorldFactory.build();
-        assertEquals(true, world.getCell(0, 0).wasAlive());
-        assertEquals(false, world.getCell(0, 1).wasAlive());
-        assertEquals(false, world.getCell(0, 2).wasAlive());
-        assertEquals(false, world.getCell(1, 0).wasAlive());
-        assertEquals(false, world.getCell(1, 1).wasAlive());
-        assertEquals(true, world.getCell(1, 2).wasAlive());
-        assertEquals(true, world.getCell(2, 0).wasAlive());
-        assertEquals(true, world.getCell(2, 1).wasAlive());
-        assertEquals(false, world.getCell(2, 2).wasAlive());
-        //
         assertEquals(true, world.getCell(0, 0).isAlive());
         assertEquals(false, world.getCell(0, 1).isAlive());
         assertEquals(false, world.getCell(0, 2).isAlive());
@@ -71,7 +61,7 @@ public class BinaryTextWorldFactoryTest {
         world.getCell(1, 3).setAlive(true);
         world.getCell(2, 2).setAlive(true);
         List<String> rows = binaryTextWorldFactory.toRows(world);
-        assertEquals(world.height(), rows.size());
+        assertEquals(world.numberOfRows(), rows.size());
         assertEquals("0100", rows.get(0));
         assertEquals("0001", rows.get(1));
         assertEquals("0010", rows.get(2));

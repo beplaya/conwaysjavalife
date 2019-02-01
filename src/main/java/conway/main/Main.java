@@ -7,7 +7,7 @@ public class Main {
 
     public static final int MIN_PERIOD = 10;
     public static final int PERIOD_STEP = 100;
-    public static final int MAX_PERIOD = 1210;
+    public static final int MAX_PERIOD = 5210;
     public static int PERIOD = 210;
     public static boolean run = false;
     private static World world;
@@ -33,6 +33,7 @@ public class Main {
                     if (run) {
                         painterGUI.update(world);
                         world.cycle();
+                        world.commit();
                     }
                 }
             }
@@ -41,7 +42,7 @@ public class Main {
 
     public static void resetWorld() {
         final BinaryTextWorldFactory binaryTextWorldFactory = new BinaryTextWorldFactory();
-        int size = 60;
+        int size = 30;
         for (int i = 0; i < size; i++) {
             binaryTextWorldFactory.addRow(randomBinaryString(size));
         }

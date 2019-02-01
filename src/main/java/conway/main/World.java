@@ -23,18 +23,26 @@ public class World {
         return cell;
     }
 
-    public int width() {
+    public int numberOfColumns() {
         return grid[0].length;
     }
 
-    public int height() {
+    public int numberOfRows() {
         return grid.length;
     }
 
     public void cycle() {
-        for (int r = 0; r < height(); r++) {
-            for (int c = 0; c < width(); c++) {
+        for (int r = 0; r < numberOfRows(); r++) {
+            for (int c = 0; c < numberOfColumns(); c++) {
                 grid[r][c].cycle(this);
+            }
+        }
+    }
+
+    public void commit() {
+        for (int r = 0; r < numberOfRows(); r++) {
+            for (int c = 0; c < numberOfColumns(); c++) {
+                grid[r][c].commit();
             }
         }
     }

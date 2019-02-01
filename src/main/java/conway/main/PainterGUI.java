@@ -1,10 +1,7 @@
 package conway.main;
 
-import sun.security.krb5.internal.PAData;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class PainterGUI extends JFrame {
@@ -41,12 +38,12 @@ public class PainterGUI extends JFrame {
 
             if (world != null) {
 
-                int cellWidth = Math.round ((float) getWidth() / (float) world.width());
-                int cellHeight = Math.round  ((float) getHeight() / (float) world.height());
+                int cellWidth = Math.round ((float) getWidth() / (float) world.numberOfColumns());
+                int cellHeight = Math.round  ((float) getHeight() / (float) world.numberOfRows());
 
 
-                for (int r = 0; r < world.height(); r++) {
-                    for (int c = 0; c < world.width(); c++) {
+                for (int r = 0; r < world.numberOfRows(); r++) {
+                    for (int c = 0; c < world.numberOfColumns(); c++) {
                         Cell cell = world.getCell(r, c);
                         paintCell(cell, g, cellWidth, cellHeight);
                     }
@@ -63,6 +60,8 @@ public class PainterGUI extends JFrame {
             g.fillRect(startX, startY, startX + cellWidth, startY + cellHeight);
             g.setColor(Color.BLACK);
             g.drawRect(startX, startY, startX + cellWidth, startY + cellHeight);
+            g.setColor(Color.WHITE);
+            g.drawString(cell.numberOfLivingNeighbors(world)+"", startX+5, startY-5);
         }
 
         private Color getRandomColor() {

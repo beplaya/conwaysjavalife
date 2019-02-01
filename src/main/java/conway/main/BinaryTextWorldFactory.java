@@ -30,7 +30,6 @@ public class BinaryTextWorldFactory {
             String rowStr = rows.get(rowIndex);
             for (int colIndex = 0; colIndex < rowStr.length(); colIndex++) {
                 boolean alive = rowStr.charAt(colIndex) == '1';
-                world.getCell(rowIndex, colIndex).setWasAlive(alive);
                 world.getCell(rowIndex, colIndex).setAlive(alive);
             }
         }
@@ -46,9 +45,9 @@ public class BinaryTextWorldFactory {
 
     public List<String> toRows(World world) {
         List<String> rows = new ArrayList<String>();
-        for (int r = 0; r < world.height(); r++) {
+        for (int r = 0; r < world.numberOfRows(); r++) {
             String rowStr = "";
-            for (int c = 0; c < world.width(); c++) {
+            for (int c = 0; c < world.numberOfColumns(); c++) {
                 rowStr += world.getCell(r, c).isAlive() ? "1" : "0";
             }
             rows.add(rowStr);

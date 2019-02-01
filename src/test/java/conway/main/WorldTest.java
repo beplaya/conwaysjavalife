@@ -41,6 +41,11 @@ public class WorldTest {
         assertEquals(true, world.getCell(2, 1).isAlive());
         assertEquals(true, world.getCell(2, 2).isAlive());
         world.cycle();
+        world.commit();
+        List<String> strings = binaryTextWorldFactory.toRows(world);
+        for(String r : strings){
+            System.out.println(r);
+        }
         assertEquals(false, world.getCell(0, 0).isAlive());
         assertEquals(true, world.getCell(0, 1).isAlive());
         assertEquals(false, world.getCell(0, 2).isAlive());
@@ -67,6 +72,7 @@ public class WorldTest {
         binaryTextWorldFactory.addRow("0000000");//0001000
         World world = binaryTextWorldFactory.build();
         world.cycle();
+        world.commit();
         List<String> actualRows = binaryTextWorldFactory.toRows(world);
         List<String> expectedRows = new ArrayList<String>() {{
             add("0000000");

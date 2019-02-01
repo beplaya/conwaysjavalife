@@ -18,29 +18,57 @@ public class CellTest {
     }
 
     @Test
-    public void itGetsTheRightNeigbors(){
-        
+    public void itGetsTheRightNeighbors(){
+        List<Cell> neighbors = world.getCell(4, 4).getNeighbors(world);
+        assertEquals(8, neighbors.size());
+        assertEquals(3, neighbors.get(0).row);
+        assertEquals(3, neighbors.get(0).column);
+
+        assertEquals(3, neighbors.get(1).row);
+        assertEquals(4, neighbors.get(1).column);
+
+        assertEquals(3, neighbors.get(2).row);
+        assertEquals(5, neighbors.get(2).column);
+
+        assertEquals(4, neighbors.get(3).row);
+        assertEquals(3, neighbors.get(3).column);
+
+        assertEquals(4, neighbors.get(4).row);
+        assertEquals(5, neighbors.get(4).column);
+
+        assertEquals(5, neighbors.get(5).row);
+        assertEquals(3, neighbors.get(5).column);
+
+        assertEquals(5, neighbors.get(6).row);
+        assertEquals(4, neighbors.get(6).column);
+
+        assertEquals(5, neighbors.get(7).row);
+        assertEquals(5, neighbors.get(7).column);
     }
 
     @Test
     public void itKnowsHowManyNeighborsAreAlive() {
-        Cell cell = world.getCell(1, 1);
+        Cell cell = world.getCell(4, 4);
         assertEquals(0, cell.numberOfLivingNeighbors(world));
-        world.getCell(0, 0).setWasAlive(true);
-        world.getCell(0, 1).setWasAlive(true);
-        world.getCell(1, 0).setWasAlive(true);
-        world.getCell(1, 3).setWasAlive(true);
-        assertEquals(3, cell.numberOfLivingNeighbors(world));
+        cell.setAlive(true);
+        world.getCell(3, 3).setAlive(true);
+        world.getCell(3, 4).setAlive(true);
+        world.getCell(3, 5).setAlive(true);
+        world.getCell(4, 3).setAlive(true);
+        world.getCell(4, 5).setAlive(true);
+        world.getCell(5, 5).setAlive(true);
+        assertEquals(6, cell.numberOfLivingNeighbors(world));
     }
 
     @Test
     public void itKnowsHowManyNeighborsAreAliveWhenOnEdge() {
         Cell cell = world.getCell(0, 0);
         assertEquals(0, cell.numberOfLivingNeighbors(world));
-        world.getCell(0, 0).setWasAlive(true);
-        world.getCell(0, 1).setWasAlive(true);
-        world.getCell(1, 0).setWasAlive(true);
-        world.getCell(1, 3).setWasAlive(true);
+        world.getCell(0, 0).setAlive(true);
+        world.getCell(0, 1).setAlive(true);
+        assertEquals(1, cell.numberOfLivingNeighbors(world));
+        world.getCell(1, 0).setAlive(true);
+        world.getCell(1, 3).setAlive(true);
         assertEquals(2, cell.numberOfLivingNeighbors(world));
     }
 
@@ -54,12 +82,24 @@ public class CellTest {
 
     @Test
     public void itKnowsWhenWellPopulated() {
-        Cell cell = world.getCell(1, 1);
-        world.getCell(0, 0).setWasAlive(true);
-        world.getCell(0, 1).setWasAlive(true);
+        Cell cell = world.getCell(4, 4);
+        world.getCell(5, 3).setAlive(true);
+        world.getCell(5, 5).setAlive(true);
         assertFalse(cell.isUnderpopulated(world));
         assertFalse(cell.isOverpopulated(world));
-        world.getCell(2, 2).setWasAlive(true);
+        world.getCell(3, 5).setAlive(true);
+        assertFalse(cell.isUnderpopulated(world));
+        assertFalse(cell.isOverpopulated(world));
+    }
+
+    @Test
+    public void itKnowsWhenWellPopulated3() {
+        Cell cell = world.getCell(4, 4);
+        world.getCell(5, 3).setAlive(true);
+        world.getCell(5, 5).setAlive(true);
+        assertFalse(cell.isUnderpopulated(world));
+        assertFalse(cell.isOverpopulated(world));
+        world.getCell(3, 5).setAlive(true);
         assertFalse(cell.isUnderpopulated(world));
         assertFalse(cell.isOverpopulated(world));
     }
@@ -68,10 +108,10 @@ public class CellTest {
     public void itKnowsWhenOverPopulated() {
         Cell cell = world.getCell(1, 1);
         assertFalse(cell.isOverpopulated(world));
-        world.getCell(0, 0).setWasAlive(true);
-        world.getCell(0, 1).setWasAlive(true);
-        world.getCell(2, 2).setWasAlive(true);
-        world.getCell(2, 1).setWasAlive(true);
+        world.getCell(0, 0).setAlive(true);
+        world.getCell(0, 1).setAlive(true);
+        world.getCell(2, 2).setAlive(true);
+        world.getCell(2, 1).setAlive(true);
         assertTrue(cell.isOverpopulated(world));
     }
 
@@ -84,6 +124,7 @@ public class CellTest {
         Cell cell = world.getCell(1, 1);
         cell.setAlive(true);
         cell.cycle(world);
+        world.commit();
 
         assertFalse(cell.isAlive());
     }
@@ -99,8 +140,8 @@ public class CellTest {
         world.getCell(0, 2).setAlive(true);
         world.getCell(1, 0).setAlive(true);
         cell.cycle(world);
-        assertFalse(cell.isAlive());
-        assertTrue(cell.wasAlive());
+        assertFalse(cell.willBeAlive());
+        assertTrue(cell.isAlive());
     }
 
 
@@ -109,11 +150,11 @@ public class CellTest {
         Cell cell = world.getCell(1, 1);
         cell.setAlive(false);
         assertFalse(cell.isInFertileTerritory(world));
-        world.getCell(0, 0).setWasAlive(true);
+        world.getCell(0, 0).setAlive(true);
         assertFalse(cell.isInFertileTerritory(world));
-        world.getCell(0, 1).setWasAlive(true);
+        world.getCell(0, 1).setAlive(true);
         assertFalse(cell.isInFertileTerritory(world));
-        world.getCell(0, 2).setWasAlive(true);
+        world.getCell(0, 2).setAlive(true);
         assertTrue(cell.isInFertileTerritory(world));
     }
 
@@ -121,12 +162,12 @@ public class CellTest {
     public void itIsBornIfInFertileTerritory() {
         Cell cell = world.getCell(1, 1);
         cell.setAlive(false);
-        world.getCell(0, 0).setWasAlive(true);
-        world.getCell(0, 1).setWasAlive(true);
-        world.getCell(0, 2).setWasAlive(true);
+        world.getCell(0, 0).setAlive(true);
+        world.getCell(0, 1).setAlive(true);
+        world.getCell(0, 2).setAlive(true);
         cell.cycle(world);
-        assertTrue(cell.isAlive());
-        assertFalse(cell.wasAlive());
+        assertTrue(cell.willBeAlive());
+        assertFalse(cell.isAlive());
     }
 
     @Test
@@ -136,8 +177,8 @@ public class CellTest {
         world.getCell(0, 1).setAlive(true);
         world.getCell(0, 2).setAlive(true);
         cell.cycle(world);
+        assertFalse(cell.willBeAlive());
         assertFalse(cell.isAlive());
-        assertFalse(cell.wasAlive());
     }
 
 }
