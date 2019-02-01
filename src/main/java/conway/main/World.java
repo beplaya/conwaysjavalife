@@ -22,4 +22,12 @@ public class World {
         }
         return cell;
     }
+
+    public int width() {
+        return grid.length;
+    }
+
+    public int height() {
+        return grid[0].length;
+    }
 }
