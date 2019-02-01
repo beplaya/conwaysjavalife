@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cell {
-    public static final int MIN_POPULATION = 2;
-    public static final int MAX_POPULATION = 3;
+    private static final int MIN_POPULATION = 2;
+    private static final int MAX_POPULATION = 3;
+    private static final int FERTILE_POPULATION = 3;
 
     private boolean alive;
     public final int row;
@@ -29,6 +30,13 @@ public class Cell {
         if (isUnderpopulated(world) || isOverpopulated(world)) {
             die();
         }
+        if(isInFertileTerritory(world)){
+            live();
+        }
+    }
+
+    private void live() {
+        alive = true;
     }
 
     private void die() {
@@ -69,6 +77,10 @@ public class Cell {
 
     boolean isOverpopulated(World world) {
         return numberOfLivingNeighbors(world) > MAX_POPULATION;
+    }
+
+    boolean isInFertileTerritory(World world) {
+        return numberOfLivingNeighbors(world) == FERTILE_POPULATION;
     }
 }
 

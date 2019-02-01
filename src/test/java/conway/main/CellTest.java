@@ -84,12 +84,38 @@ public class CellTest {
 
         Cell cell = world.getCell(1, 1);
         cell.setAlive(true);
-        world.getCell(0,0).setAlive(true);
-        world.getCell(0,1).setAlive(true);
-        world.getCell(0,2).setAlive(true);
-        world.getCell(1,0).setAlive(true);
+        world.getCell(0, 0).setAlive(true);
+        world.getCell(0, 1).setAlive(true);
+        world.getCell(0, 2).setAlive(true);
+        world.getCell(1, 0).setAlive(true);
         cell.cycle(world);
 
         assertFalse(cell.isAlive());
     }
+
+
+    @Test
+    public void itKnowsIfInFertileTerritory() {
+        Cell cell = world.getCell(1, 1);
+        cell.setAlive(false);
+        assertFalse(cell.isInFertileTerritory(world));
+        world.getCell(0, 0).setAlive(true);
+        assertFalse(cell.isInFertileTerritory(world));
+        world.getCell(0, 1).setAlive(true);
+        assertFalse(cell.isInFertileTerritory(world));
+        world.getCell(0, 2).setAlive(true);
+        assertTrue(cell.isInFertileTerritory(world));
+    }
+
+    @Test
+    public void itIsBornIfInFertileTerritory() {
+        Cell cell = world.getCell(1, 1);
+        cell.setAlive(false);
+        world.getCell(0, 0).setAlive(true);
+        world.getCell(0, 1).setAlive(true);
+        world.getCell(0, 2).setAlive(true);
+        cell.cycle(world);
+        assertTrue(cell.isAlive());
+    }
+
 }
