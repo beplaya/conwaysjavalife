@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cell {
+    public static final int MIN_POPULATION = 2;
+
     private boolean alive;
     public final int row;
     public final int column;
@@ -23,14 +25,20 @@ public class Cell {
     }
 
     public void cycle(World world) {
+        if (isUnderpopulated(world)) {
+            die();
+        }
+    }
 
+    private void die() {
+        alive = false;
     }
 
     int numberOfLivingNeighbors(World world) {
         List<Cell> neighbors = getNeighbors(world);
         int livingCount = 0;
-        for(Cell c : neighbors){
-            if(c.isAlive()){
+        for (Cell c : neighbors) {
+            if (c.isAlive()) {
                 livingCount++;
             }
         }
@@ -52,6 +60,10 @@ public class Cell {
         }
 
         return neighbors;
+    }
+
+    boolean isUnderpopulated(World world) {
+        return numberOfLivingNeighbors(world) < MIN_POPULATION;
     }
 }
 

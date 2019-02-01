@@ -1,6 +1,5 @@
 package conway.main;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,6 +34,24 @@ public class CellTest {
         world.getCell(1, 0).setAlive(true);
         world.getCell(1, 3).setAlive(true);
         assertEquals(2, cell.numberOfLivingNeighbors(world));
+    }
+
+    @Test
+    public void itKnowsWhenUnderPopulated() {
+        Cell cell = world.getCell(1, 1);
+        assertTrue(cell.isUnderpopulated(world));
+        world.getCell(0, 1).setAlive(true);
+        assertTrue(cell.isUnderpopulated(world));
+    }
+
+    @Test
+    public void itKnowsWhenWellPopulated() {
+        Cell cell = world.getCell(1, 1);
+        world.getCell(0, 0).setAlive(true);
+        world.getCell(0, 1).setAlive(true);
+        assertFalse(cell.isUnderpopulated(world));
+        world.getCell(2, 2).setAlive(true);
+        assertFalse(cell.isUnderpopulated(world));
     }
 
     @Test
