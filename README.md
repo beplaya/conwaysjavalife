@@ -2,4 +2,5 @@
 
 TDD of the logic of Conway's Game of Life with a quick gui for fun.
 
-![alt text](https://raw.githubusercontent.com/beplaya/conwaysjavalife/master/conwaysgol.png)
+The colors are arbitrary.
+![](https://raw.githubusercontent.com/beplaya/conwaysjavalife/master/conwaysgol.png)
