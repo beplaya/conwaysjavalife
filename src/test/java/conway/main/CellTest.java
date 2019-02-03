@@ -18,7 +18,7 @@ public class CellTest {
     }
 
     @Test
-    public void itGetsTheRightNeighbors(){
+    public void itGetsTheRightNeighbors() {
         List<Cell> neighbors = world.getCell(4, 4).getNeighbors(world);
         assertEquals(8, neighbors.size());
         assertEquals(3, neighbors.get(0).row);
@@ -68,8 +68,10 @@ public class CellTest {
         world.getCell(0, 1).setAlive(true);
         assertEquals(1, cell.numberOfLivingNeighbors(world));
         world.getCell(1, 0).setAlive(true);
-        world.getCell(1, 3).setAlive(true);
-        assertEquals(2, cell.numberOfLivingNeighbors(world));
+        world.getCell(world.numberOfRows() - 1, 0).setAlive(true);
+        assertEquals(3, cell.numberOfLivingNeighbors(world));
+        world.getCell(0, world.numberOfColumns() - 1).setAlive(true);
+        assertEquals(4, cell.numberOfLivingNeighbors(world));
     }
 
     @Test
@@ -114,8 +116,6 @@ public class CellTest {
         world.getCell(2, 1).setAlive(true);
         assertTrue(cell.isOverpopulated(world));
     }
-
-
 
 
     @Test

@@ -8,7 +8,8 @@ public class Main {
     public static final int MIN_PERIOD = 10;
     public static final int PERIOD_STEP = 100;
     public static final int MAX_PERIOD = 5210;
-    public static int PERIOD = 210;
+    public static final int WORLD_SIZE = 41;
+    public static int PERIOD = 10;
     public static boolean run = false;
     private static World world;
 
@@ -42,7 +43,7 @@ public class Main {
 
     public static void resetWorld() {
         final BinaryTextWorldFactory binaryTextWorldFactory = new BinaryTextWorldFactory();
-        int size = 30;
+        int size = WORLD_SIZE;
         for (int i = 0; i < size; i++) {
             binaryTextWorldFactory.addRow(randomBinaryString(size));
         }

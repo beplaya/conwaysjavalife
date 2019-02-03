@@ -29,7 +29,7 @@ public class Cell {
     }
 
     public void cycle(World world) {
-        if(isAlive()){
+        if (isAlive()) {
             markToLive();
         }
 
@@ -69,13 +69,20 @@ public class Cell {
         for (int rdi = 0; rdi < deltas.length; rdi++) {
             int R = deltas[rdi].row + row;
             int C = deltas[rdi].col + column;
-            if (R >= 0 && R < world.numberOfRows()) {
-                if (C >= 0 && C < world.numberOfColumns()) {
-                    Cell neighbor = world.getCell(R, C);
-                    neighbors.add(neighbor);
-
-                }
+            if (R < 0) {
+                R += world.numberOfRows();
             }
+            if (R >= world.numberOfRows()) {
+                R -= world.numberOfRows();
+            }
+            if (C < 0) {
+                C += world.numberOfColumns();
+            }
+            if (C >= world.numberOfColumns()) {
+                C -= world.numberOfColumns();
+            }
+            Cell neighbor = world.getCell(R, C);
+            neighbors.add(neighbor);
         }
 
         return neighbors;

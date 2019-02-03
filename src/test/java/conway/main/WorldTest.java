@@ -47,16 +47,16 @@ public class WorldTest {
             System.out.println(r);
         }
         assertEquals(false, world.getCell(0, 0).isAlive());
-        assertEquals(true, world.getCell(0, 1).isAlive());
+        assertEquals(false, world.getCell(0, 1).isAlive());
         assertEquals(false, world.getCell(0, 2).isAlive());
         //
         assertEquals(false, world.getCell(1, 0).isAlive());
         assertEquals(false, world.getCell(1, 1).isAlive());
-        assertEquals(true, world.getCell(1, 2).isAlive());
+        assertEquals(false, world.getCell(1, 2).isAlive());
         //
-        assertEquals(true, world.getCell(2, 0).isAlive());
+        assertEquals(false, world.getCell(2, 0).isAlive());
         assertEquals(false, world.getCell(2, 1).isAlive());
-        assertEquals(true, world.getCell(2, 2).isAlive());
+        assertEquals(false, world.getCell(2, 2).isAlive());
     }
 
 

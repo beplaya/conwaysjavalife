@@ -18,13 +18,15 @@ public class ControlGUI extends JFrame {
         JButton decreaseSpeedBtn = new JButton("-");
         JButton increaseSpeedBtn = new JButton("+");
         JButton resetBtn = new JButton("RESET");
+        JButton cycleColorBtn = new JButton("CycleColor");
         setLayout(new FlowLayout(FlowLayout.CENTER));
         add(toggleRun);
         add(decreaseSpeedBtn);
         add(increaseSpeedBtn);
         add(resetBtn);
+        add(cycleColorBtn);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocation(1000, 10);
+        setLocation(1700, 10);
 
         speedLabel = new JLabel("XXX");
         add(speedLabel);
@@ -53,6 +55,11 @@ public class ControlGUI extends JFrame {
         resetBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Main.resetWorld();
+            }
+        });
+        cycleColorBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               PainterGUI.cycleColorMode();
             }
         });
     }
